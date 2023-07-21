@@ -38,8 +38,22 @@ Account getAccount(string content)
     account.Number = content.Substring(0, 14);
     account.IBAN = content.Substring(content.IndexOf("IBAN: ")+6, 23);
     account.Currency = content.Substring(content.IndexOf("Currency: ")+10, 3);
+    account.BalanceBroughtForward = getBalanceBroughtForward(content);
 
     return account;
+}
+
+decimal getBalanceBroughtForward(string content)
+{
+    (int start, int end) = getBalanceBroughtForwardStartEnd(content);
+    return decimal.Parse(content.Substring(start+7, end - start - 6));
+}
+
+(int, int) getBalanceBroughtForwardStartEnd(string content)
+{
+    int index = content.IndexOf("B/F ...");
+    int indexEnd = content.IndexOf(".", index + 7) + 2;
+    return (index, indexEnd);
 }
 
 Tuple<DateOnly, DateOnly> getStatementDates(string pageContent)

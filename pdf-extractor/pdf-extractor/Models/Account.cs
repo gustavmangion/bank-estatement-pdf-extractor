@@ -11,5 +11,6 @@ namespace pdf_extractor.Models
         public string Number { get; set; }
         public string IBAN { get; set; }
         public string Currency { get; set; }
+        public decimal BalanceBroughtForward { get; set; }
     }
 }
