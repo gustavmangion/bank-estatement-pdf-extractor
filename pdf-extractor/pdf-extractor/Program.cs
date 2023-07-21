@@ -1,4 +1,5 @@
-﻿using pdf_extractor.Models;
+﻿using pdf_extractor.Helpers;
+using pdf_extractor.Models;
 using System.Text.RegularExpressions;
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.Content;
@@ -40,8 +41,23 @@ Account getAccount(string content)
 
     List<string> transactionsSplit = getTransactionsSplit(content);
     
+    for(int i=2; i<transactionsSplit.Count-1; i+=2)
+    {
+        account.Transactions.Add(getTransaction(transactionsSplit[i], transactionsSplit[i+1]));
+    }
 
     return account;
+}
+
+Transaction getTransaction(string p1, string p2)
+{
+    Transaction transaction = new Transaction();
+    string pattern;
+    if (p1.Contains("I/W CLEARING CHEQUE"))
+        TransactionHelper.getChequeDebit(p1, transaction);
+
+    TransactionHelper.getSecondPart(p2, transaction);
+    return transaction;
 }
 
 List<string> getTransactionsSplit(string content)

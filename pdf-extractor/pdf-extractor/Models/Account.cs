@@ -12,5 +12,6 @@ namespace pdf_extractor.Models
         public string IBAN { get; set; }
         public string Currency { get; set; }
         public decimal BalanceBroughtForward { get; set; }
+        public List<Transaction> Transactions { get; set; } = new List<Transaction>();
     }
 }
