@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pdf-extractor", "pdf-extractor\pdf-extractor.csproj", "{382FDC08-618B-47D6-B534-5BD0311AED3D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{382FDC08-618B-47D6-B534-5BD0311AED3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{382FDC08-618B-47D6-B534-5BD0311AED3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{382FDC08-618B-47D6-B534-5BD0311AED3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{382FDC08-618B-47D6-B534-5BD0311AED3D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A1B78735-E373-4E69-9048-5FEF56D0CE80}
+	EndGlobalSection
+EndGlobal
