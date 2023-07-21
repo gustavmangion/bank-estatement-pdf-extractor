@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using pdf_extractor.Models;
+using System.Text.RegularExpressions;
+using System.Transactions;
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.Content;
 
@@ -8,6 +10,8 @@ string pdfPassword = getPDFPassword("statement_pwd.txt");
 
 string path = Path.Combine(Directory.GetCurrentDirectory(), "AccountStatement.pdf");
 string pageContent = "";
+
+Statement statement = new Statement();
 
 using (PdfDocument document = PdfDocument.Open(path, new ParsingOptions { Password = pdfPassword }))
 {
@@ -21,9 +25,24 @@ using (PdfDocument document = PdfDocument.Open(path, new ParsingOptions { Passwo
         pageContent += page.Text;
     }
 }
-
 pageContent= cleanNextPageEntities(pageContent);
-Console.WriteLine(pageContent);
+var dates = getStatementDates(pageContent);
+statement.From = dates.Item1;
+statement.To = dates.Item2;
+
+Console.WriteLine(statement.ToString());
+
+Tuple<DateOnly, DateOnly> getStatementDates(string pageContent)
+{
+    string pattern = "Transactions Details for the period from ([0-9]{2}/[0-9]{2}/[0-9]{4}) to ([0-9]{2}/[0-9]{2}/[0-9]{4})";
+    Regex regex = new Regex(pattern);
+    MatchCollection matches = regex.Matches(pageContent);
+
+    if (matches.Count == 0 || matches[0].Groups.Count != 3)
+        throw new Exception("Unable to find statement date range");
+
+    return new Tuple<DateOnly, DateOnly>(DateOnly.Parse(matches[0].Groups[1].Value), DateOnly.Parse(matches[0].Groups[2].Value));
+}
 
 string cleanNextPageEntities(string text)
 {
