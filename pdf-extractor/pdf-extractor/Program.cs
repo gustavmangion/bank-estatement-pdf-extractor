@@ -1,6 +1,5 @@
 ﻿using pdf_extractor.Models;
 using System.Text.RegularExpressions;
-using System.Transactions;
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.Content;
 
@@ -41,6 +40,7 @@ Account getAccount(string content)
 
     List<string> transactionsSplit = getTransactionsSplit(content);
     
+
     return account;
 }
 
