@@ -39,10 +39,15 @@ Account getAccount(string content)
     account.IBAN = content.Substring(content.IndexOf("IBAN: ")+6, 23);
     account.Currency = content.Substring(content.IndexOf("Currency: ")+10, 3);
 
-    Regex regex = new Regex("([0-9]{2}\\/[0-9]{2}\\/[0-9]{4}.*?)(?=[0-9]{2}\\/[0-9]{2}\\/[0-9]{4})|([0-9]{2}\\/[0-9]{2}\\/[0-9]{4}.*)Total");
-    var matches = regex.Split(content).Where(x => !string.IsNullOrEmpty(x)).ToList();
-
+    List<string> transactionsSplit = getTransactionsSplit(content);
+    
     return account;
+}
+
+List<string> getTransactionsSplit(string content)
+{
+    Regex regex = new Regex("([0-9]{2}\\/[0-9]{2}\\/[0-9]{4}.*?)(?=[0-9]{2}\\/[0-9]{2}\\/[0-9]{4})|([0-9]{2}\\/[0-9]{2}\\/[0-9]{4}.*)Total");
+    return regex.Split(content).Where(x => !string.IsNullOrEmpty(x)).ToList();
 }
 
 Tuple<DateOnly, DateOnly> getStatementDates(string pageContent)
