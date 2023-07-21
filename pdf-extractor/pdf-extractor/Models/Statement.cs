@@ -10,5 +10,7 @@ namespace pdf_extractor.Models
     {
         public DateOnly From { get; set; }
         public DateOnly To { get; set; }
+
+        public List<Account> Accounts { get; set; } = new List<Account>();
     }
 }

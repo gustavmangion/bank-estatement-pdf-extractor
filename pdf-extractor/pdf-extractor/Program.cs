@@ -26,11 +26,21 @@ using (PdfDocument document = PdfDocument.Open(path, new ParsingOptions { Passwo
     }
 }
 pageContent= cleanNextPageEntities(pageContent);
-var dates = getStatementDates(pageContent);
-statement.From = dates.Item1;
-statement.To = dates.Item2;
+(statement.From, statement.To) = getStatementDates(pageContent);
 
-Console.WriteLine(statement.ToString());
+string[] accounts = pageContent.Split("Account Details: ");
+for (int i=1;  i< accounts.Length; i++)
+    statement.Accounts.Add(getAccount(accounts[i]));
+
+Account getAccount(string content)
+{
+    Account account = new Account();
+    account.Number = content.Substring(0, 14);
+    account.IBAN = content.Substring(content.IndexOf("IBAN: ")+6, 23);
+    account.Currency = content.Substring(content.IndexOf("Currency: ")+10, 3);
+
+    return account;
+}
 
 Tuple<DateOnly, DateOnly> getStatementDates(string pageContent)
 {
