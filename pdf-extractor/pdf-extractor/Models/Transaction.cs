@@ -10,10 +10,16 @@ namespace pdf_extractor.Models
     {
         public DateOnly Date { get; set; }
         public DateOnly EnteredBank { get; set; }
-        public string Description { get; set; }
-        public string CardNo { get; set; }
-        public string Reference { get; set; }
+        public string Description { get; set; } = string.Empty;
+        public string CardNo { get; set; } = string.Empty;
+        public string Reference { get; set; } = string.Empty;
         public decimal Amount { get; set; }
-        public bool IsDebit { get; set; } = true;
+        public TranType Type { get; set; } = 0;
     }
+
+    enum TranType {
+        Debit = 0,
+        Credit = 1
+    }
+
 }
