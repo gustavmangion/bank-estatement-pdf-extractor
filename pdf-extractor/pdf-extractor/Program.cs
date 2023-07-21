@@ -40,6 +40,8 @@ Account getAccount(string content)
     account.Currency = content.Substring(content.IndexOf("Currency: ")+10, 3);
     account.BalanceBroughtForward = getBalanceBroughtForward(content);
 
+    content = content.Substring(getBalanceBroughtForwardStartEnd(content).Item2);
+
     return account;
 }
 
