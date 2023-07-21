@@ -40,7 +40,10 @@ Account getAccount(string content)
     account.Currency = content.Substring(content.IndexOf("Currency: ")+10, 3);
     account.BalanceBroughtForward = getBalanceBroughtForward(content);
 
-    content = content.Substring(getBalanceBroughtForwardStartEnd(content).Item2);
+    //content = content.Substring(getBalanceBroughtForwardStartEnd(content).Item2+1);
+
+    Regex regex = new Regex("([0-9]{2}\\/[0-9]{2}\\/[0-9]{4}.*?)(?=[0-9]{2}\\/[0-9]{2}\\/[0-9]{4})|([0-9]{2}\\/[0-9]{2}\\/[0-9]{4}.*)Total");
+    var matches = regex.Split(content).Where(x => !string.IsNullOrEmpty(x)).ToList();
 
     return account;
 }
