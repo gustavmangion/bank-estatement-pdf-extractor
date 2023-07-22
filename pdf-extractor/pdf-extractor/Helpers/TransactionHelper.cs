@@ -24,21 +24,16 @@ namespace pdf_extractor.Helpers
 
         public static void getChequeDebit(string p1, Transaction transaction)
         {
-            string pattern = "([0-9]{2}/[0-9]{2}/[0-9]{4})([A-Z/ ]*)([0-9]*)";
-            Regex regex = new Regex(pattern);
-
-            List<string> matches = regex.Split(p1).Where(x => !string.IsNullOrEmpty(x)).ToList();
-
             transaction.EnteredBank = getEnteredBank(p1);
             transaction.Description = "Cheque Withdrawl";
-            transaction.Reference = matches[2];
+            transaction.Reference = p1.Substring(p1.Length-6, 6);
             transaction.Category = TranCategory.ChequeWithdrawal;
         }
 
         public static void getATMWithdrawal(string p1, Transaction transaction)
         {
             transaction.EnteredBank = getEnteredBank(p1);
-            transaction.Description = {p1.Substring(29, p1.Length - 57)};
+            transaction.Description = p1.Substring(29, p1.Length - 57);
             transaction.Reference = p1.Substring(p1.Length-8, 8);
             transaction.Category = TranCategory.ATMWithdrawal;
         }
@@ -48,7 +43,7 @@ namespace pdf_extractor.Helpers
             int index = p1.IndexOf("B/O");
 
             transaction.EnteredBank = getEnteredBank(p1);
-            transaction.Description = {p1.Substring(index+4, p1.Length - (index+12))};
+            transaction.Description = p1.Substring(index+4, p1.Length - (index+12));
             transaction.Reference = p1.Substring(p1.Length - 8, 8);
             transaction.Type = TranType.Credit;
             transaction.Category = TranCategory.BankTransfer;
@@ -57,7 +52,7 @@ namespace pdf_extractor.Helpers
         public static void getRefund(string p1, Transaction transaction)
         {
             transaction.EnteredBank = getEnteredBank(p1);
-            transaction.Description = {p1.Substring(20, p1.Length - 31)};
+            transaction.Description = p1.Substring(20, p1.Length - 31);
             transaction.CardNo = p1.Substring(p1.Length - 4, 4);
             transaction.Type = TranType.Credit;
             transaction.Category = TranCategory.Refund;
@@ -74,7 +69,7 @@ namespace pdf_extractor.Helpers
         public static void getMiscellaneousCharge(string p1, Transaction transaction)
         {
             transaction.EnteredBank = getEnteredBank(p1);
-            transaction.Description = {p1.Substring(10, p1.Length - 18)};
+            transaction.Description = p1.Substring(10, p1.Length - 18);
             transaction.Reference = p1.Substring(p1.Length - 8, 8);
             transaction.Category = TranCategory.Other;
         }
@@ -82,7 +77,7 @@ namespace pdf_extractor.Helpers
         public static void getPurchase(string p1, Transaction transaction)
         {
             transaction.EnteredBank = getEnteredBank(p1);
-            transaction.Description = {p1.Substring(20, p1.Length - 31)};
+            transaction.Description = p1.Substring(20, p1.Length - 31);
             transaction.CardNo = p1.Substring(p1.Length - 10, 4);
             transaction.Reference = p1.Substring(p1.Length - 6, 6);
             transaction.Category = TranCategory.Purchase;
