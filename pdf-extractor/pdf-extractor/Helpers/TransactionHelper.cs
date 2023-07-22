@@ -32,5 +32,12 @@ namespace pdf_extractor.Helpers
             transaction.Date = DateOnly.Parse(matches[0]);
             transaction.Amount = decimal.Parse(matches[2]);
         }
+
+        public static void getATMWithdrawal(string p1, Transaction transaction)
+        {
+            transaction.EnteredBank = DateOnly.Parse(p1.Substring(0, 10));
+            transaction.Description = $"ATM Withdrawal - {p1.Substring(29, p1.Length - 57)}";
+            transaction.Reference = p1.Substring(p1.Length-8, 8);
+        }
     }
 }

@@ -55,6 +55,8 @@ Transaction getTransaction(string p1, string p2)
     string pattern;
     if (p1.Contains("I/W CLEARING CHEQUE"))
         TransactionHelper.getChequeDebit(p1, transaction);
+    else if (p1.Contains("ATM WDL"))
+        TransactionHelper.getATMWithdrawal(p1, transaction);
 
     TransactionHelper.getSecondPart(p2, transaction);
     return transaction;
