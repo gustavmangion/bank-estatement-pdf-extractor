@@ -40,7 +40,8 @@ Account getAccount(string content)
     account.Currency = content.Substring(content.IndexOf("Currency: ")+10, 3);
 
     List<string> transactionsSplit = getTransactionsSplit(content);
-    
+
+    account.BalanceBroughtForward = TransactionHelper.getBalanceBroughtForward(transactionsSplit[1]);
     for(int i=2; i<transactionsSplit.Count-1; i+=2)
     {
         account.Transactions.Add(getTransaction(transactionsSplit[i], transactionsSplit[i+1]));

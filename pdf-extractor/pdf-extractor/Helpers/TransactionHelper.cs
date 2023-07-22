@@ -83,6 +83,12 @@ namespace pdf_extractor.Helpers
             transaction.Category = TranCategory.Purchase;
         }
 
+        public static decimal getBalanceBroughtForward(string p1)
+        {
+            int index = p1.IndexOf("B/F...");
+            return decimal.Parse(p1.Substring(index+18, p1.Length - 17));
+        }
+
         private static DateOnly getEnteredBank(string p1)
         {
             return DateOnly.Parse(p1.Substring(0, 10));
