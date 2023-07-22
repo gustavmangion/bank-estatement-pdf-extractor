@@ -37,9 +37,9 @@ namespace pdf_extractor.Helpers
         public static void getATMWithdrawal(string p1, Transaction transaction)
         {
             transaction.EnteredBank = getEnteredBank(p1);
-            transaction.Description = $"ATM Withdrawal - {p1.Substring(29, p1.Length - 57)}";
+            transaction.Description = $"{p1.Substring(29, p1.Length - 57)}";
             transaction.Reference = p1.Substring(p1.Length-8, 8);
-            transaction.Category = TranCategory.ATM;
+            transaction.Category = TranCategory.ATMWithdrawal;
         }
 
         public static void getBankTransferCredit(string p1, Transaction transaction)
@@ -47,7 +47,7 @@ namespace pdf_extractor.Helpers
             int index = p1.IndexOf("B/O");
 
             transaction.EnteredBank = getEnteredBank(p1);
-            transaction.Description = $"Bank Transfer - {p1.Substring(index+4, p1.Length - (index+12))}";
+            transaction.Description = $"{p1.Substring(index+4, p1.Length - (index+12))}";
             transaction.Reference = p1.Substring(p1.Length - 8, 8);
             transaction.Type = TranType.Credit;
             transaction.Category = TranCategory.BankTransfer;
@@ -56,7 +56,7 @@ namespace pdf_extractor.Helpers
         public static void getRefund(string p1, Transaction transaction)
         {
             transaction.EnteredBank = getEnteredBank(p1);
-            transaction.Description = $"Refund - {p1.Substring(20, p1.Length - 31)}";
+            transaction.Description = $"{p1.Substring(20, p1.Length - 31)}";
             transaction.CardNo = p1.Substring(p1.Length - 4, 4);
             transaction.Type = TranType.Credit;
             transaction.Category = TranCategory.Refund;

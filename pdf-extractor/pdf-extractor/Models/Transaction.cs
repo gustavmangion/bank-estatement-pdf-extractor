@@ -26,11 +26,12 @@ namespace pdf_extractor.Models
     enum TranCategory
     {
         Purchase = 0, 
-        Cheque = 1,
-        BankTransfer = 2,
-        ATM = 3,
-        Salary = 4,
-        Refund = 5,
+        ChequeDeposit = 1,
+        ChequeWithdrawal = 2,
+        BankTransfer = 3,
+        ATMWithdrawal = 4,
+        Salary = 5,
+        Refund = 6,
         Other = 99
     }
 
