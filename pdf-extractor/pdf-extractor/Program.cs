@@ -63,6 +63,8 @@ Transaction getTransaction(string p1, string p2)
         TransactionHelper.getRefund(p1, transaction);
     else if (p1.Substring(10, 6) == "SALARY")
         TransactionHelper.getSalary(p1, transaction);
+    else 
+        TransactionHelper.getMiscellaneousCharge(p1, transaction);
 
     TransactionHelper.getSecondPart(p2, transaction);
     return transaction;

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -70,9 +71,19 @@ namespace pdf_extractor.Helpers
             transaction.Category= TranCategory.Salary;
         }
 
+        public static void getMiscellaneousCharge(string p1, Transaction transaction)
+        {
+            transaction.EnteredBank = getEnteredBank(p1);
+            transaction.Description = $"{p1.Substring(10, p1.Length - 18)}";
+            transaction.Reference = p1.Substring(p1.Length - 8, 8);
+            transaction.Category = TranCategory.Other;
+        }
+
         private static DateOnly getEnteredBank(string p1)
         {
             return DateOnly.Parse(p1.Substring(0, 10));
         }
+
+        
     }
 }
