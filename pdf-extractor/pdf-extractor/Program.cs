@@ -53,7 +53,6 @@ Account getAccount(string content)
 Transaction getTransaction(string p1, string p2)
 {
     Transaction transaction = new Transaction();
-    string pattern;
     if (p1.Substring(10, 3) == "PUR")
         TransactionHelper.getPurchase(p1, transaction);
     else if (p1.Contains("I/W CLEARING CHEQUE"))
