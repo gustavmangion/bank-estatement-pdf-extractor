@@ -7,30 +7,38 @@ using UglyToad.PdfPig.Content;
 Console.WriteLine("ADCB Bank E-Statement PDF Extractor");
 
 string pdfPassword = getPDFPassword("statement_pwd.txt");
-
 string path = Path.Combine(Directory.GetCurrentDirectory(), "AccountStatement.pdf");
-string pageContent = "";
+string pageContent = cleanNextPageEntities(getPDFContent(path, pdfPassword));
+Statement statement = getStatement(pageContent);
 
-Statement statement = new Statement();
-
-using (PdfDocument document = PdfDocument.Open(path, new ParsingOptions { Password = pdfPassword }))
+Statement getStatement(string pageContent)
 {
-    int pageCount = document.NumberOfPages;
+    Statement statement = new Statement();
+    (statement.From, statement.To) = getStatementDates(pageContent);
 
-    for(int i = 1; i < pageCount; i++)
-    {
-        //Page numbering is 1 indexed
-        Page page = document.GetPage(i+1);
+    string[] accounts = pageContent.Split("Account Details: ");
+    for (int i = 1; i < accounts.Length; i++)
+        statement.Accounts.Add(getAccount(accounts[i]));
 
-        pageContent += page.Text;
-    }
+    return statement;
 }
-pageContent= cleanNextPageEntities(pageContent);
-(statement.From, statement.To) = getStatementDates(pageContent);
 
-string[] accounts = pageContent.Split("Account Details: ");
-for (int i=1;  i< accounts.Length; i++)
-    statement.Accounts.Add(getAccount(accounts[i]));
+string getPDFContent(string path, string password)
+{
+    string content = string.Empty;
+    using (PdfDocument document = PdfDocument.Open(path, new ParsingOptions { Password = pdfPassword }))
+    {
+        int pageCount = document.NumberOfPages;
+
+        for (int i = 1; i < pageCount; i++)
+        {
+            //Page numbering is 1 indexed
+            Page page = document.GetPage(i + 1);
+            content += page.Text;
+        }
+    }
+    return content;
+}
 
 Account getAccount(string content)
 {
@@ -42,6 +50,7 @@ Account getAccount(string content)
     List<string> transactionsSplit = getTransactionsSplit(content);
 
     account.BalanceBroughtForward = TransactionHelper.getBalanceBroughtForward(transactionsSplit[1]);
+
     for(int i=2; i<transactionsSplit.Count-1; i+=2)
     {
         account.Transactions.Add(getTransaction(transactionsSplit[i], transactionsSplit[i+1]));
@@ -74,20 +83,23 @@ Transaction getTransaction(string p1, string p2)
 
 List<string> getTransactionsSplit(string content)
 {
-    Regex regex = new Regex("([0-9]{2}\\/[0-9]{2}\\/[0-9]{4}.*?)(?=[0-9]{2}\\/[0-9]{2}\\/[0-9]{4})|([0-9]{2}\\/[0-9]{2}\\/[0-9]{4}.*)Total");
+    Regex regex = new Regex("([0-9]{2}\\/[0-9]{2}\\/[0-9]{4}.*?)"+
+        "(?=[0-9]{2}\\/[0-9]{2}\\/[0-9]{4})|([0-9]{2}\\/[0-9]{2}\\/[0-9]{4}.*)Total");
     return regex.Split(content).Where(x => !string.IsNullOrEmpty(x)).ToList();
 }
 
 Tuple<DateOnly, DateOnly> getStatementDates(string pageContent)
 {
-    string pattern = "Transactions Details for the period from ([0-9]{2}/[0-9]{2}/[0-9]{4}) to ([0-9]{2}/[0-9]{2}/[0-9]{4})";
+    string pattern = "Transactions Details for the period from "+ 
+        "([0-9]{2}/[0-9]{2}/[0-9]{4}) to ([0-9]{2}/[0-9]{2}/[0-9]{4})";
     Regex regex = new Regex(pattern);
     MatchCollection matches = regex.Matches(pageContent);
 
     if (matches.Count == 0 || matches[0].Groups.Count != 3)
         throw new Exception("Unable to find statement date range");
 
-    return new Tuple<DateOnly, DateOnly>(DateOnly.Parse(matches[0].Groups[1].Value), DateOnly.Parse(matches[0].Groups[2].Value));
+    return new Tuple<DateOnly, DateOnly>(DateOnly.Parse(matches[0].Groups[1].Value), 
+        DateOnly.Parse(matches[0].Groups[2].Value));
 }
 
 string cleanNextPageEntities(string text)
