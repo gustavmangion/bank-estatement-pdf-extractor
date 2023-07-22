@@ -31,7 +31,7 @@ namespace pdf_extractor.Helpers
             transaction.EnteredBank = getEnteredBank(p1);
             transaction.Description = "Cheque Withdrawl";
             transaction.Reference = matches[2];
-            transaction.Category = TranCategory.Cheque;
+            transaction.Category = TranCategory.ChequeWithdrawal;
         }
 
         public static void getATMWithdrawal(string p1, Transaction transaction)
@@ -60,6 +60,14 @@ namespace pdf_extractor.Helpers
             transaction.CardNo = p1.Substring(p1.Length - 4, 4);
             transaction.Type = TranType.Credit;
             transaction.Category = TranCategory.Refund;
+        }
+
+        public static void getSalary(string p1, Transaction transaction)
+        {
+            transaction.EnteredBank = getEnteredBank(p1);
+            transaction.Description = "Salary";
+            transaction.Type = TranType.Credit;
+            transaction.Category= TranCategory.Salary;
         }
 
         private static DateOnly getEnteredBank(string p1)

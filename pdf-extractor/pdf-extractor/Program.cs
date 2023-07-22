@@ -59,8 +59,10 @@ Transaction getTransaction(string p1, string p2)
         TransactionHelper.getATMWithdrawal(p1, transaction);
     else if (p1.Contains("B/O"))
         TransactionHelper.getBankTransferCredit(p1, transaction);
-    else if (p1.Substring(10,3) == "REF")
+    else if (p1.Substring(10, 3) == "REF")
         TransactionHelper.getRefund(p1, transaction);
+    else if (p1.Substring(10, 6) == "SALARY")
+        TransactionHelper.getSalary(p1, transaction);
 
     TransactionHelper.getSecondPart(p2, transaction);
     return transaction;
