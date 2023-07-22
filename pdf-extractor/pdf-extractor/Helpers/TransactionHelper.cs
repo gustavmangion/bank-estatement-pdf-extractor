@@ -79,11 +79,18 @@ namespace pdf_extractor.Helpers
             transaction.Category = TranCategory.Other;
         }
 
+        public static void getPurchase(string p1, Transaction transaction)
+        {
+            transaction.EnteredBank = getEnteredBank(p1);
+            transaction.Description = $"{p1.Substring(20, p1.Length - 31)}";
+            transaction.CardNo = p1.Substring(p1.Length - 10, 4);
+            transaction.Reference = p1.Substring(p1.Length - 6, 6);
+            transaction.Category = TranCategory.Purchase;
+        }
+
         private static DateOnly getEnteredBank(string p1)
         {
             return DateOnly.Parse(p1.Substring(0, 10));
         }
-
-        
     }
 }

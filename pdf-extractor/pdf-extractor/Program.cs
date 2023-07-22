@@ -53,7 +53,9 @@ Transaction getTransaction(string p1, string p2)
 {
     Transaction transaction = new Transaction();
     string pattern;
-    if (p1.Contains("I/W CLEARING CHEQUE"))
+    if (p1.Substring(10, 3) == "PUR")
+        TransactionHelper.getPurchase(p1, transaction);
+    else if (p1.Contains("I/W CLEARING CHEQUE"))
         TransactionHelper.getChequeDebit(p1, transaction);
     else if (p1.Contains("ATM WDL"))
         TransactionHelper.getATMWithdrawal(p1, transaction);
@@ -63,7 +65,7 @@ Transaction getTransaction(string p1, string p2)
         TransactionHelper.getRefund(p1, transaction);
     else if (p1.Substring(10, 6) == "SALARY")
         TransactionHelper.getSalary(p1, transaction);
-    else 
+    else
         TransactionHelper.getMiscellaneousCharge(p1, transaction);
 
     TransactionHelper.getSecondPart(p2, transaction);
