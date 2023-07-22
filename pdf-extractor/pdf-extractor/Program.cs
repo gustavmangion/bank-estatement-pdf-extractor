@@ -88,7 +88,7 @@ List<string> getTransactionsSplit(string content)
     return regex.Split(content).Where(x => !string.IsNullOrEmpty(x)).ToList();
 }
 
-Tuple<DateOnly, DateOnly> getStatementDates(string pageContent)
+(DateOnly from, DateOnly to) getStatementDates(string pageContent)
 {
     string pattern = "Transactions Details for the period from "+ 
         "([0-9]{2}/[0-9]{2}/[0-9]{4}) to ([0-9]{2}/[0-9]{2}/[0-9]{4})";
@@ -98,7 +98,7 @@ Tuple<DateOnly, DateOnly> getStatementDates(string pageContent)
     if (matches.Count == 0 || matches[0].Groups.Count != 3)
         throw new Exception("Unable to find statement date range");
 
-    return new Tuple<DateOnly, DateOnly>(DateOnly.Parse(matches[0].Groups[1].Value), 
+    return (DateOnly.Parse(matches[0].Groups[1].Value), 
         DateOnly.Parse(matches[0].Groups[2].Value));
 }
 
