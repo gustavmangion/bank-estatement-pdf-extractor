@@ -39,5 +39,14 @@ namespace pdf_extractor.Helpers
             transaction.Description = $"ATM Withdrawal - {p1.Substring(29, p1.Length - 57)}";
             transaction.Reference = p1.Substring(p1.Length-8, 8);
         }
+
+        public static void getBankTransferCredit(string p1, Transaction transaction)
+        {
+            int index = p1.IndexOf("B/O");
+
+            transaction.EnteredBank = DateOnly.Parse(p1.Substring(0, 10));
+            transaction.Description = $"Bank Transfer - {p1.Substring(index+4, p1.Length - (index+12))}";
+            transaction.Reference = p1.Substring(p1.Length - 8, 8);
+        }
     }
 }

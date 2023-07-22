@@ -57,6 +57,8 @@ Transaction getTransaction(string p1, string p2)
         TransactionHelper.getChequeDebit(p1, transaction);
     else if (p1.Contains("ATM WDL"))
         TransactionHelper.getATMWithdrawal(p1, transaction);
+    else if (p1.Contains("B/O"))
+        TransactionHelper.getBankTransferCredit(p1, transaction);
 
     TransactionHelper.getSecondPart(p2, transaction);
     return transaction;
