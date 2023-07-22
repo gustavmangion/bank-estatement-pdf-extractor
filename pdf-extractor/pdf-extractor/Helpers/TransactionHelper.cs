@@ -19,7 +19,7 @@ namespace pdf_extractor.Helpers
             List<string> matches = regex.Split(p2).Where(x => !string.IsNullOrEmpty(x)).ToList();
 
             transaction.Date = DateOnly.Parse(matches[0]);
-            transaction.Amount = decimal.Parse(matches[2]);
+            transaction.Amount = decimal.Parse(matches[1]);
         }
 
         public static void getChequeDebit(string p1, Transaction transaction)
